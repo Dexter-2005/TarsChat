@@ -19,7 +19,11 @@ export default function RootLayout({
 
     useEffect(() => {
         if (user) {
-            storeUser();
+            storeUser({
+                name: user.username || `${user.firstName || ""} ${user.lastName || ""}`.trim() || user.primaryEmailAddress?.emailAddress?.split("@")[0] || "Unknown",
+                email: user.primaryEmailAddress?.emailAddress || "",
+                imageUrl: user.imageUrl || "",
+            });
         }
     }, [user, storeUser]);
 

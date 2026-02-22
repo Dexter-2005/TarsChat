@@ -2,8 +2,12 @@ import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
 export const store = mutation({
-    args: {},
-    handler: async (ctx) => {
+    args: {
+        name: v.optional(v.string()),
+        email: v.optional(v.string()),
+        imageUrl: v.optional(v.string()),
+    },
+    handler: async (ctx, args) => {
         const identity = await ctx.auth.getUserIdentity();
         if (!identity) throw new Error("Not authenticated");
 
@@ -12,12 +16,16 @@ export const store = mutation({
             .withIndex("by_clerkId", (q) => q.eq("clerkId", identity.subject))
             .unique();
 
+        const name = args.name || identity.nickname || identity.name || identity.email?.split("@")[0] || "Unknown";
+        const email = args.email || identity.email || "";
+        const imageUrl = args.imageUrl || identity.pictureUrl || "";
+
         if (existing) {
             // Update existing user
             await ctx.db.patch(existing._id, {
-                name: identity.name ?? "Unknown",
-                email: identity.email ?? "",
-                imageUrl: identity.pictureUrl ?? "",
+                name,
+                email,
+                imageUrl,
                 isOnline: true,
                 lastSeen: Date.now(),
             });
@@ -27,9 +35,9 @@ export const store = mutation({
         // Create new user
         return await ctx.db.insert("users", {
             clerkId: identity.subject,
-            name: identity.name ?? "Unknown",
-            email: identity.email ?? "",
-            imageUrl: identity.pictureUrl ?? "",
+            name,
+            email,
+            imageUrl,
             isOnline: true,
             lastSeen: Date.now(),
         });
