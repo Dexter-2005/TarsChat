@@ -1,0 +1,5 @@
+here are the api keys you asked for NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_YmFsYW5jZWQtZ3VwcHktOTUuY2xlcmsuYWNjb3VudHMuZGV2JA
+CLERK_SECRET_KEY=sk_test_yg9dWgGHdVUN8gG4J8m0QYNN7MD2EXSjxli2bQhXbN                                                                                                                                                               Cloud URL
+https://energetic-giraffe-630.eu-west-1.convex.cloud
+HTTP Actions URL
+https://energetic-giraffe-630.eu-west-1.convex.site
